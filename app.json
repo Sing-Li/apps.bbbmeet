@@ -1,0 +1,18 @@
+{
+    "id": "a5c11229-1879-4c7b-819e-c1b98bc62766",
+    "version": "0.0.1",
+    "requiredApiVersion": "^1.19.0",
+    "iconFile": "icon.png",
+    "author": {
+        "name": "Marcelo Schmidt",
+        "homepage": "https://github.com/marceloschmidt/apps.todo",
+        "support": "https://github.com/marceloschmidt/apps.todo/issues"
+    },
+    "name": "Rocket.Chat To-Do",
+    "nameSlug": "rocketchat-to-do",
+    "classFile": "ToDoApp.ts",
+    "description": "Keep a shared to-do list with people in the same room",
+    "implements": [
+        "IUIKitInteractionHandler"
+    ]
+}

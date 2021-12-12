@@ -7,10 +7,12 @@ import {
     IPersistence,
     IRead,
 } from '@rocket.chat/apps-engine/definition/accessors';
+import { ApiSecurity, ApiVisibility } from '@rocket.chat/apps-engine/definition/api';
 import { App } from '@rocket.chat/apps-engine/definition/App';
 import { IAppInfo } from '@rocket.chat/apps-engine/definition/metadata';
 import { IUIKitInteractionHandler, IUIKitResponse, UIKitBlockInteractionContext, UIKitViewCloseInteractionContext, UIKitViewSubmitInteractionContext } from '@rocket.chat/apps-engine/definition/uikit';
 import { ToDoCommand } from './commands/ToDoCommand';
+import { WebhookEndpoint } from './endpoints/webhook';
 import { ExecuteBlockActionHandler } from './handlers/ExecuteBlockActionHandler';
 import { ExecuteViewClosedHandler } from './handlers/ExecuteViewClosedHandler';
 import { ExecuteViewSubmitHandler } from './handlers/ExecuteViewSubmitHandler';
@@ -30,6 +32,13 @@ export class ToDoApp extends App implements IUIKitInteractionHandler {
     protected async extendConfiguration(configuration: IConfigurationExtend): Promise<void> {
         // SlashCommands:
         await configuration.slashCommands.provideSlashCommand(new ToDoCommand(this));
+
+        // Webhook Endpoints:
+        configuration.api.provideApi({
+            visibility: ApiVisibility.PUBLIC,
+            security: ApiSecurity.UNSECURE,
+            endpoints: [new WebhookEndpoint(this)],
+        });
     }
 
     /* UIKit Interaction Handlers */

@@ -34,9 +34,10 @@ export class BBBSlashCommand extends AppCommand {
                 read,
                 modify,
                 message: {
-                    text: `${args[0]} command not found`
+                    text: `"${args[0]}" subcommand for "${this.command}" command not found`
                 }
             })
+            return
         }
         await this.handleCommands({context, read, modify, http, persis}, args)
     }

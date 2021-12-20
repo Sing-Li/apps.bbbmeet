@@ -1,7 +1,6 @@
 import {
     IHttp,
     IModify,
-    IModifyCreator,
     IPersistence,
     IRead
 } from '@rocket.chat/apps-engine/definition/accessors'
@@ -29,7 +28,6 @@ export class WeeklyJoinSubcommand extends AppCommand {
             .getEnvironmentReader()
             .getSettings()
             .getValueById(RecurringMeetings.weekly.id)
-        console.log(weeklyUrl)
         if (weeklyUrl.match(/^\s*$/) !== null) {
             await this.notifySender({
                 context,
@@ -42,7 +40,7 @@ export class WeeklyJoinSubcommand extends AppCommand {
         const blockBuilder: BlockBuilder = modify.getCreator().getBlockBuilder()
         blockBuilder.addSectionBlock({
             text: {
-                type: TextObjectType.MARKDOWN,
+                type: TextObjectType.PLAINTEXT,
                 text: 'Join the weekly meeting by clicking the "Join" button below'
             }
         })

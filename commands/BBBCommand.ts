@@ -27,9 +27,17 @@ export class BBBSlashCommand extends AppCommand {
         http: IHttp,
         persis: IPersistence
     ): Promise<void> {
-        await this.handleCommands(
-            {context, read, modify, http, persis},
-            context.getArguments()
-        )
+        const args: Array<string> = context.getArguments()
+        if (!this.hasSubcommand(args[0])) {
+            this.notifySender({
+                context,
+                read,
+                modify,
+                message: {
+                    text: `${args[0]} command not found`
+                }
+            })
+        }
+        await this.handleCommands({context, read, modify, http, persis}, args)
     }
 }

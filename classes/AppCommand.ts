@@ -5,12 +5,14 @@ import {
     IRead
 } from '@rocket.chat/apps-engine/definition/accessors'
 import {App} from '@rocket.chat/apps-engine/definition/App'
+import {IMessage} from '@rocket.chat/apps-engine/definition/messages'
 import {
     ISlashCommand,
     ISlashCommandPreview,
     ISlashCommandPreviewItem,
     SlashCommandContext
 } from '@rocket.chat/apps-engine/definition/slashcommands'
+import {IUser} from '@rocket.chat/apps-engine/definition/users'
 
 export class AppCommand implements ISlashCommand {
     public command: string
@@ -81,7 +83,7 @@ export class AppCommand implements ISlashCommand {
         return this.commandMap.has(subcommand)
     }
 
-    private async handleCommands(
+    protected async handleCommands(
         {
             context,
             read,
@@ -116,5 +118,23 @@ export class AppCommand implements ISlashCommand {
             persis,
             commandArgs
         )
+    }
+
+    protected async notifySender({
+        context,
+        read,
+        modify,
+        message
+    }: {
+        context: SlashCommandContext
+        modify: IModify
+        read: IRead
+        message: Omit<IMessage, 'sender' | 'room'>
+    }): Promise<void> {
+        await modify.getNotifier().notifyUser(context.getSender(), {
+            room: context.getRoom(),
+            sender: (await read.getUserReader().getAppUser()) as IUser,
+            ...message
+        })
     }
 }

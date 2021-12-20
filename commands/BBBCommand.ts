@@ -6,8 +6,8 @@ import {
 } from '@rocket.chat/apps-engine/definition/accessors'
 import {App} from '@rocket.chat/apps-engine/definition/App'
 import {SlashCommandContext} from '@rocket.chat/apps-engine/definition/slashcommands'
-import {WeeklySubcommand} from '.'
-import {AppCommand} from '../classes'
+import {AppCommand} from '../classes/AppCommand'
+import {WeeklySubcommand} from './weekly/WeeklySubcommand'
 
 export class BBBSlashCommand extends AppCommand {
     public command: string = 'bbb'

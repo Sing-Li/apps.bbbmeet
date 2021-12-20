@@ -5,7 +5,8 @@ import {
 } from '@rocket.chat/apps-engine/definition/accessors'
 import {App} from '@rocket.chat/apps-engine/definition/App'
 import {IAppInfo} from '@rocket.chat/apps-engine/definition/metadata'
-import {BBBSlashCommand, WeeklyJoinSubcommand} from './commands'
+import {BBBSlashCommand} from './commands/BBBCommand'
+import {WeeklyJoinSubcommand} from './commands/weekly/WeeklyJoinSubcommand'
 
 export default class BigBlueButton extends App {
     constructor(info: IAppInfo, logger: ILogger, accessors: IAppAccessors) {

@@ -1,1 +1,0 @@
-export {AppCommand} from './AppCommand'

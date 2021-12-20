@@ -1,5 +1,5 @@
 {
-"compilerOptions": {
+  "compilerOptions": {
     "target": "es2017",
     "module": "commonjs",
     "moduleResolution": "node",
@@ -10,8 +10,7 @@
     "noImplicitReturns": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    },
-"include": [
-    "**/*.ts"
-    ]
+    "resolveJsonModule": true
+  },
+  "include": ["**/*.ts"]
 }

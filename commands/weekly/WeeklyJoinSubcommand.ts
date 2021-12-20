@@ -8,11 +8,11 @@ import {
 import {SlashCommandContext} from '@rocket.chat/apps-engine/definition/slashcommands'
 import {
     BlockBuilder,
-    BlockElementType,
     TextObjectType
 } from '@rocket.chat/apps-engine/definition/uikit'
 import {IUser} from '@rocket.chat/apps-engine/definition/users'
 import {AppCommand} from '../../classes/AppCommand'
+import {RecurringMeetings} from '../../settings/RecurringMeetings'
 
 export class WeeklyJoinSubcommand extends AppCommand {
     public command: string = 'join'
@@ -38,9 +38,12 @@ export class WeeklyJoinSubcommand extends AppCommand {
                 blockBuilder.newButtonElement({
                     text: {
                         type: TextObjectType.PLAINTEXT,
-                        text: 'join'
+                        text: 'Join'
                     },
-                    url: 'https://bbb.rocket.chat/b/adm-1ki-nmm-bfc'
+                    url: await read
+                        .getEnvironmentReader()
+                        .getSettings()
+                        .getValueById(RecurringMeetings.weekly.id)
                 })
             ]
         })

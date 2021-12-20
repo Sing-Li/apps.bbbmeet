@@ -25,7 +25,20 @@ export class WeeklyJoinSubcommand extends AppCommand {
         persis: IPersistence,
         args?: Array<string>
     ): Promise<void> {
-        const creator: IModifyCreator = modify.getCreator()
+        const weeklyUrl: string = await read
+            .getEnvironmentReader()
+            .getSettings()
+            .getValueById(RecurringMeetings.weekly.id)
+        console.log(weeklyUrl)
+        if (weeklyUrl.match(/^\s*$/) !== null) {
+            await this.notifySender({
+                context,
+                read,
+                modify,
+                message: {text: 'No weekly meeting url found'}
+            })
+            return
+        }
         const blockBuilder: BlockBuilder = modify.getCreator().getBlockBuilder()
         blockBuilder.addSectionBlock({
             text: {
@@ -40,10 +53,7 @@ export class WeeklyJoinSubcommand extends AppCommand {
                         type: TextObjectType.PLAINTEXT,
                         text: 'Join'
                     },
-                    url: await read
-                        .getEnvironmentReader()
-                        .getSettings()
-                        .getValueById(RecurringMeetings.weekly.id)
+                    url: weeklyUrl
                 })
             ]
         })

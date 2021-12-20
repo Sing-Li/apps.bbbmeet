@@ -81,29 +81,7 @@ export class AppCommand implements ISlashCommand {
         return this.commandMap.has(subcommand)
     }
 
-    protected async handleCommands(
-        {
-            context,
-            read,
-            modify,
-            http,
-            persis
-        }: {
-            context: SlashCommandContext
-            read: IRead
-            modify: IModify
-            http: IHttp
-            persis: IPersistence
-        },
-        args: Array<string>
-    ): Promise<void> {
-        if (!this.hasSubcommand(args[0])) {
-            return await this.executor(context, read, modify, http, persis)
-        }
-        await this.__handleCommands({context, read, modify, http, persis}, args)
-    }
-
-    private async __handleCommands(
+    private async handleCommands(
         {
             context,
             read,
@@ -124,7 +102,7 @@ export class AppCommand implements ISlashCommand {
         const commandHandler = this.commandMap.get(command) as AppCommand
 
         if (commandHandler.hasSubcommand(commandArgs[0])) {
-            await commandHandler.__handleCommands(
+            await commandHandler.handleCommands(
                 {context, read, modify, http, persis},
                 commandArgs
             )

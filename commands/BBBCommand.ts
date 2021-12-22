@@ -7,6 +7,7 @@ import {
 import {App} from '@rocket.chat/apps-engine/definition/App'
 import {SlashCommandContext} from '@rocket.chat/apps-engine/definition/slashcommands'
 import {AppCommand} from '../classes/AppCommand'
+import {GetSubcommand} from './common/GetSubcommand'
 import {WeeklySubcommand} from './weekly/WeeklySubcommand'
 
 export class BBBSlashCommand extends AppCommand {
@@ -18,6 +19,7 @@ export class BBBSlashCommand extends AppCommand {
     public constructor(app: App) {
         super(app)
         this.registerCommand(new WeeklySubcommand(this.app))
+        this.registerCommand(new GetSubcommand(this.app))
     }
 
     public async executor(

@@ -11,7 +11,7 @@ import {
 } from '@rocket.chat/apps-engine/definition/uikit'
 import {IUser} from '@rocket.chat/apps-engine/definition/users'
 import {AppCommand} from '../../classes/AppCommand'
-import {RecurringMeetings} from '../../settings/RecurringMeetings'
+import {getWeeklyMeetingDetails} from '../../functions/getWeeklyDetails'
 
 export class WeeklyJoinSubcommand extends AppCommand {
     public command: string = 'join'
@@ -24,19 +24,19 @@ export class WeeklyJoinSubcommand extends AppCommand {
         persis: IPersistence,
         args?: Array<string>
     ): Promise<void> {
-        const weeklyUrl: string = await read
-            .getEnvironmentReader()
-            .getSettings()
-            .getValueById(RecurringMeetings.weekly.id)
-        if (weeklyUrl.match(/^\s*$/) !== null) {
-            await this.notifySender({
-                context,
+        const [bbbServer, weeklyRoomId]: Array<string> =
+            await getWeeklyMeetingDetails(
                 read,
-                modify,
-                message: {text: 'No weekly meeting url found'}
-            })
-            return
-        }
+                async (errorMessage: string): Promise<void> => {
+                    await this.notifySender({
+                        context,
+                        read,
+                        modify,
+                        message: {text: errorMessage}
+                    })
+                    throw new Error('no setting provided')
+                }
+            )
         const blockBuilder: BlockBuilder = modify.getCreator().getBlockBuilder()
         blockBuilder.addSectionBlock({
             text: {
@@ -51,7 +51,7 @@ export class WeeklyJoinSubcommand extends AppCommand {
                         type: TextObjectType.PLAINTEXT,
                         text: 'Join'
                     },
-                    url: weeklyUrl
+                    url: `${bbbServer.replace(/\/$/, '')}/b/${weeklyRoomId}`
                 })
             ]
         })

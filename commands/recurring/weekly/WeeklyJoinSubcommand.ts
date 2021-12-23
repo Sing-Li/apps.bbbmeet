@@ -10,11 +10,18 @@ import {
     TextObjectType
 } from '@rocket.chat/apps-engine/definition/uikit'
 import {IUser} from '@rocket.chat/apps-engine/definition/users'
-import {AppCommand} from '../../classes/AppCommand'
-import {getWeeklyMeetingDetails} from '../../functions/getWeeklyDetails'
+import {getWeeklyMeetingDetails} from '../../../functions/getWeeklyDetails'
+import {AppCommand} from '../../../internals/AppCommand'
+import {HelpCommand} from '../../../internals/HelpCommand'
 
 export class WeeklyJoinSubcommand extends AppCommand {
     public command: string = 'join'
+    public i18nDescription: string = 'Join weekly meeting'
+
+    constructor() {
+        super({})
+        this.registerCommand(new HelpCommand(this))
+    }
 
     public async executor(
         context: SlashCommandContext,
@@ -26,16 +33,8 @@ export class WeeklyJoinSubcommand extends AppCommand {
     ): Promise<void> {
         const [bbbServer, weeklyRoomId]: Array<string> =
             await getWeeklyMeetingDetails(
-                read,
-                async (errorMessage: string): Promise<void> => {
-                    await this.notifySender({
-                        context,
-                        read,
-                        modify,
-                        message: {text: errorMessage}
-                    })
-                    throw new Error('no setting provided')
-                }
+                {context, read, modify},
+                this.getApp().getAccessors()
             )
         const blockBuilder: BlockBuilder = modify.getCreator().getBlockBuilder()
         blockBuilder.addSectionBlock({

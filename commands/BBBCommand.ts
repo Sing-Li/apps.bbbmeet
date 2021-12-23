@@ -6,20 +6,23 @@ import {
 } from '@rocket.chat/apps-engine/definition/accessors'
 import {App} from '@rocket.chat/apps-engine/definition/App'
 import {SlashCommandContext} from '@rocket.chat/apps-engine/definition/slashcommands'
-import {AppCommand} from '../classes/AppCommand'
+import {AppCommand} from '../internals/AppCommand'
+import {HelpCommand} from '../internals/HelpCommand'
 import {GetSubcommand} from './common/GetSubcommand'
-import {WeeklySubcommand} from './weekly/WeeklySubcommand'
+import {RecurringSubcommand} from './recurring/RecurringSubcommand'
 
 export class BBBSlashCommand extends AppCommand {
     public command: string = 'bbb'
-    public i18nDescription: string = ''
+    public i18nDescription: string =
+        'Manage Big Blue Button integration from Rocket.Chat!'
     public i18nParamsExample: string = ''
     public providesPreview: boolean = false
 
     public constructor(app: App) {
-        super(app)
-        this.registerCommand(new WeeklySubcommand(this.app))
-        this.registerCommand(new GetSubcommand(this.app))
+        super({app})
+        this.registerCommand(new RecurringSubcommand(app))
+        this.registerCommand(new GetSubcommand(app))
+        this.registerCommand(new HelpCommand(this))
     }
 
     public async executor(
@@ -29,18 +32,6 @@ export class BBBSlashCommand extends AppCommand {
         http: IHttp,
         persis: IPersistence
     ): Promise<void> {
-        const args: Array<string> = context.getArguments()
-        if (!this.hasSubcommand(args[0])) {
-            this.notifySender({
-                context,
-                read,
-                modify,
-                message: {
-                    text: `"${args[0]}" subcommand for "${this.command}" command not found`
-                }
-            })
-            return
-        }
-        await this.handleCommands({context, read, modify, http, persis}, args)
+        await this.handleCommands({context, read, modify, http, persis})
     }
 }

@@ -1,28 +1,44 @@
-import {IRead} from '@rocket.chat/apps-engine/definition/accessors'
+import {
+    IAppAccessors,
+    IModify,
+    IRead
+} from '@rocket.chat/apps-engine/definition/accessors'
+import {SlashCommandContext} from '@rocket.chat/apps-engine/definition/slashcommands'
 import {GeneralSettings} from '../settings/General'
 import {RecurringMeetings} from '../settings/RecurringMeetings'
+import {errorSettingCallback} from './errorSettingCallback'
+import {getSettingValue} from './getSetting'
 
 export async function getWeeklyMeetingDetails(
-    read: IRead,
-    callback: (errorMessage: string) => Promise<any>
+    {
+        context,
+        read,
+        modify
+    }: {context: SlashCommandContext; read: IRead; modify: IModify},
+    accessors: IAppAccessors
 ): Promise<Array<string>> {
-    const server: string = await read
-        .getEnvironmentReader()
-        .getSettings()
-        .getValueById(GeneralSettings.bbbServer.id)
-    if (server.match(/^\s*$/) !== null) {
-        await callback(
-            'BBB server details not found, please set them in app settings'
-        )
-    }
-    const weeklyRoomId: string = await read
-        .getEnvironmentReader()
-        .getSettings()
-        .getValueById(RecurringMeetings.weeklyRoomId.id)
-    if (weeklyRoomId.match(/^\s*$/) !== null) {
-        await callback(
-            'Weekly meeting room Id not found, please set them in app settings'
-        )
-    }
+    const server: string = await getSettingValue(
+        accessors,
+        GeneralSettings.bbbServer,
+        errorSettingCallback,
+        {
+            context,
+            read,
+            modify,
+            message: {text: GeneralSettings.bbbServer.errorMessage}
+        }
+    )
+    // RecurringMeetings.weeklyRoomId
+    const weeklyRoomId: string = await getSettingValue(
+        accessors,
+        RecurringMeetings.weeklyRoomId,
+        errorSettingCallback,
+        {
+            context,
+            read,
+            modify,
+            message: {text: RecurringMeetings.weeklyRoomId.errorMessage}
+        }
+    )
     return [server, weeklyRoomId]
 }

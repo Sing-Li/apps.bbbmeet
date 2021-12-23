@@ -1,8 +1,4 @@
-import {
-    IModify,
-    IModifyCreator,
-    IRead
-} from '@rocket.chat/apps-engine/definition/accessors'
+import {IModify, IModifyCreator, IRead} from '@rocket.chat/apps-engine/definition/accessors'
 import {IMessage} from '@rocket.chat/apps-engine/definition/messages'
 import {IRoom, RoomType} from '@rocket.chat/apps-engine/definition/rooms'
 import {SlashCommandContext} from '@rocket.chat/apps-engine/definition/slashcommands'
@@ -20,19 +16,11 @@ export async function sendDirectToSender({
     message: Omit<IMessage, 'sender' | 'room'>
 }) {
     const appUser = (await read.getUserReader().getAppUser()) as IUser
-    const usernames: Array<string> = [context.getSender(), appUser].map(
-        (user: IUser) => user.username
-    )
+    const usernames: Array<string> = [context.getSender(), appUser].map((user: IUser) => user.username)
     const creator: IModifyCreator = modify.getCreator()
     let room: IRoom = await read.getRoomReader().getDirectByUsernames(usernames)
     if (room === undefined) {
-        const roomId = await creator.finish(
-            creator
-                .startRoom()
-                .setMembersToBeAddedByUsernames(usernames)
-                .setType(RoomType.DIRECT_MESSAGE)
-                .setCreator(appUser)
-        )
+        const roomId = await creator.finish(creator.startRoom().setMembersToBeAddedByUsernames(usernames).setType(RoomType.DIRECT_MESSAGE).setCreator(appUser))
         room = (await read.getRoomReader().getById(roomId)) as IRoom
     }
     await creator.finish(

@@ -1,21 +1,16 @@
 {
-  "trailingComma": "none",
-  "tabWidth": 4,
-  "semi": false,
-  "singleQuote": true,
-  "jsxSingleQuote": true,
-  "endOfLine": "crlf",
-  "arrowParens": "avoid",
-  "bracketSpacing": false,
-  "quoteProps": "as-needed",
-  "useEditorConfig": true,
-  "importOrderCaseInsensitive": true,
-  "importOrderSortSpecifiers": true,
-  "importOrder": [
-    "^@core/(.*)$",
-    "^@rocket.chat/(.*)$",
-    "^@server/(.*)$",
-    "^@ui/(.*)$",
-    "^[./]"
-  ]
+    "trailingComma": "none",
+    "printWidth": 160,
+    "tabWidth": 4,
+    "semi": false,
+    "singleQuote": true,
+    "jsxSingleQuote": true,
+    "endOfLine": "crlf",
+    "arrowParens": "avoid",
+    "bracketSpacing": false,
+    "quoteProps": "as-needed",
+    "useEditorConfig": true,
+    "importOrderCaseInsensitive": true,
+    "importOrderSortSpecifiers": true,
+    "importOrder": ["^@core/(.*)$", "^@rocket.chat/(.*)$", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"]
 }

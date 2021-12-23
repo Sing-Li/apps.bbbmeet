@@ -1,9 +1,4 @@
-import {
-    IHttp,
-    IModify,
-    IPersistence,
-    IRead
-} from '@rocket.chat/apps-engine/definition/accessors'
+import {IHttp, IModify, IPersistence, IRead} from '@rocket.chat/apps-engine/definition/accessors'
 import {SlashCommandContext} from '@rocket.chat/apps-engine/definition/slashcommands'
 import {isAdmin} from '../functions/isAdmin'
 import {notifySender} from '../functions/notifySender'

@@ -14,8 +14,7 @@ export const GeneralSettings: Record<string, IAppSetting> = {
             packageValue: 'https://demo.bigbluebutton.org',
             section: 'General'
         },
-        validFunc: async (value: string): Promise<boolean> =>
-            value.match(/^\s*$/) !== null,
+        validFunc: async (value: string): Promise<boolean> => value.match(/^\s*$/) !== null,
         errorMessage: 'invalid Big Blue Button server instance URL'
     },
     notificationRooms: {
@@ -29,12 +28,7 @@ export const GeneralSettings: Record<string, IAppSetting> = {
             packageValue: 'general',
             section: 'General'
         },
-        validFunc: async (
-            value: string,
-            accessors: IAppAccessors
-        ): Promise<boolean> =>
-            (await accessors.reader.getRoomReader().getByName(value)) !==
-            undefined,
+        validFunc: async (value: string, accessors: IAppAccessors): Promise<boolean> => (await accessors.reader.getRoomReader().getByName(value)) !== undefined,
         errorMessage: 'configured notification room not found'
     }
 }

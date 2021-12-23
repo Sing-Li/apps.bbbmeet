@@ -7,10 +7,7 @@ export async function getSettingValue(
     errorCallback: (args?: any) => Promise<void>,
     errorCallbackArgs?: any
 ): Promise<any> {
-    const value: any = await accessors.reader
-        .getEnvironmentReader()
-        .getSettings()
-        .getValueById(setting.setting.id)
+    const value: any = await accessors.reader.getEnvironmentReader().getSettings().getValueById(setting.setting.id)
     if (setting.validFunc && !(await setting.validFunc(value, accessors))) {
         return await errorCallback(errorCallbackArgs)
     }

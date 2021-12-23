@@ -1,14 +1,6 @@
-import {
-    IHttp,
-    IModify,
-    IPersistence,
-    IRead
-} from '@rocket.chat/apps-engine/definition/accessors'
+import {IHttp, IModify, IPersistence, IRead} from '@rocket.chat/apps-engine/definition/accessors'
 import {SlashCommandContext} from '@rocket.chat/apps-engine/definition/slashcommands'
-import {
-    BlockBuilder,
-    TextObjectType
-} from '@rocket.chat/apps-engine/definition/uikit'
+import {BlockBuilder, TextObjectType} from '@rocket.chat/apps-engine/definition/uikit'
 import {IUser} from '@rocket.chat/apps-engine/definition/users'
 import {getWeeklyMeetingDetails} from '../../../functions/getWeeklyDetails'
 import {AppCommand} from '../../../internals/AppCommand'
@@ -23,19 +15,8 @@ export class WeeklyJoinSubcommand extends AppCommand {
         this.registerCommand(new HelpCommand(this))
     }
 
-    public async executor(
-        context: SlashCommandContext,
-        read: IRead,
-        modify: IModify,
-        http: IHttp,
-        persis: IPersistence,
-        args?: Array<string>
-    ): Promise<void> {
-        const [bbbServer, weeklyRoomId]: Array<string> =
-            await getWeeklyMeetingDetails(
-                {context, read, modify},
-                this.getApp().getAccessors()
-            )
+    public async executor(context: SlashCommandContext, read: IRead, modify: IModify, http: IHttp, persis: IPersistence, args?: Array<string>): Promise<void> {
+        const [bbbServer, weeklyRoomId]: Array<string> = await getWeeklyMeetingDetails({context, read, modify}, this.getApp().getAccessors())
         const blockBuilder: BlockBuilder = modify.getCreator().getBlockBuilder()
         blockBuilder.addSectionBlock({
             text: {

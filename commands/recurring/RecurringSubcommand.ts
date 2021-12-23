@@ -5,8 +5,7 @@ import {WeeklySubcommand} from './weekly/WeeklySubcommand'
 
 export class RecurringSubcommand extends AppCommand {
     public command: string = 'recurring'
-    public i18nDescription: string =
-        'Handle recurring meeting resources/activities'
+    public i18nDescription: string = 'Handle recurring meeting resources/activities'
 
     constructor(app: App) {
         super({app})

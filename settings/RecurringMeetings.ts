@@ -27,12 +27,14 @@ export const RecurringMeetings: Record<string, IAppSetting> = {
             section: 'Recurring Meetings'
         },
         valuesSourceFunc: async (accessors: IAppAccessors): Promise<Array<ISettingSelectValue>> =>
-            ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'].map((element: string) => {
-                return {
-                    key: element,
-                    i18nLabel: element[0].toLocaleUpperCase().concat(element.substring(1))
+            ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'].map(
+                (element: string) => {
+                    return {
+                        key: element,
+                        i18nLabel: element[0].toLocaleUpperCase().concat(element.substring(1))
+                    }
                 }
-            }),
+            ),
         errorMessage: 'invalid weekly day set'
     },
     weeklyMeetingTime: {
@@ -47,7 +49,8 @@ export const RecurringMeetings: Record<string, IAppSetting> = {
             section: 'Recurring Meetings'
         },
         errorMessage: 'invalid meeting time set',
-        validFunc: async (value: string): Promise<boolean> => value.match(/^ *[0-23]:[0-59] +[aApP][mM] *$/) !== null
+        validFunc: async (value: string): Promise<boolean> =>
+            value.match(/^ *[0-23]:[0-59] +[aApP][mM] *$/) !== null
     }
     // TODO: add more like monthly, daily, etc.
 }

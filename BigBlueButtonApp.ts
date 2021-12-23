@@ -16,28 +16,20 @@ export default class BigBlueButton extends App {
         super(info, logger, accessors)
     }
 
-    protected async extendConfiguration(
-        configuration: IConfigurationExtend
-    ): Promise<void> {
+    protected async extendConfiguration(configuration: IConfigurationExtend): Promise<void> {
         await this.provideSlashCommands(configuration)
         await this.provideSettings(configuration)
         await this.registerProcessors(configuration)
     }
 
-    private async provideSettings(
-        configuration: IConfigurationExtend
-    ): Promise<void> {
+    private async provideSettings(configuration: IConfigurationExtend): Promise<void> {
         for await (const setting of getAllSettings(this.getAccessors())) {
             await configuration.settings.provideSetting(setting)
         }
     }
 
-    private async provideSlashCommands(
-        configuration: IConfigurationExtend
-    ): Promise<void> {
-        await configuration.slashCommands.provideSlashCommand(
-            new BBBSlashCommand(this)
-        )
+    private async provideSlashCommands(configuration: IConfigurationExtend): Promise<void> {
+        await configuration.slashCommands.provideSlashCommand(new BBBSlashCommand(this))
         await configuration.slashCommands.provideSlashCommand(
             new WeeklyJoinSubcommand().slashCommand({
                 i18nDescription: 'Join weekly meeting on BBB',
@@ -48,9 +40,7 @@ export default class BigBlueButton extends App {
         )
     }
 
-    private async registerProcessors(
-        configuration: IConfigurationExtend
-    ): Promise<void> {
+    private async registerProcessors(configuration: IConfigurationExtend): Promise<void> {
         await configuration.scheduler.registerProcessors([
             {
                 id: RecurringNotificationJobs.WEEKLY,

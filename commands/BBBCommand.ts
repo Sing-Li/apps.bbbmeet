@@ -19,7 +19,13 @@ export class BBBSlashCommand extends AppCommand {
         this.registerCommand(new HelpCommand(this))
     }
 
-    public async executor(context: SlashCommandContext, read: IRead, modify: IModify, http: IHttp, persis: IPersistence): Promise<void> {
+    public async executor(
+        context: SlashCommandContext,
+        read: IRead,
+        modify: IModify,
+        http: IHttp,
+        persis: IPersistence
+    ): Promise<void> {
         await this.handleCommands({context, read, modify, http, persis})
     }
 }

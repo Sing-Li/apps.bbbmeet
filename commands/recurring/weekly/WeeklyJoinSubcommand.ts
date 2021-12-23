@@ -15,8 +15,18 @@ export class WeeklyJoinSubcommand extends AppCommand {
         this.registerCommand(new HelpCommand(this))
     }
 
-    public async executor(context: SlashCommandContext, read: IRead, modify: IModify, http: IHttp, persis: IPersistence, args?: Array<string>): Promise<void> {
-        const [bbbServer, weeklyRoomId]: Array<string> = await getWeeklyMeetingDetails({context, read, modify}, this.getApp().getAccessors())
+    public async executor(
+        context: SlashCommandContext,
+        read: IRead,
+        modify: IModify,
+        http: IHttp,
+        persis: IPersistence,
+        args?: Array<string>
+    ): Promise<void> {
+        const [bbbServer, weeklyRoomId]: Array<string> = await getWeeklyMeetingDetails(
+            {context, read, modify},
+            this.getApp().getAccessors()
+        )
         const blockBuilder: BlockBuilder = modify.getCreator().getBlockBuilder()
         blockBuilder.addSectionBlock({
             text: {

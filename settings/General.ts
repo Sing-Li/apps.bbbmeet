@@ -28,7 +28,8 @@ export const GeneralSettings: Record<string, IAppSetting> = {
             packageValue: 'general',
             section: 'General'
         },
-        validFunc: async (value: string, accessors: IAppAccessors): Promise<boolean> => (await accessors.reader.getRoomReader().getByName(value)) !== undefined,
+        validFunc: async (value: string, accessors: IAppAccessors): Promise<boolean> =>
+            (await accessors.reader.getRoomReader().getByName(value)) !== undefined,
         errorMessage: 'configured notification room not found'
     }
 }

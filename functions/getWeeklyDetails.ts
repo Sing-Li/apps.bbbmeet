@@ -9,18 +9,28 @@ export async function getWeeklyMeetingDetails(
     {context, read, modify}: {context: SlashCommandContext; read: IRead; modify: IModify},
     accessors: IAppAccessors
 ): Promise<Array<string>> {
-    const server: string = await getSettingValue(accessors, GeneralSettings.bbbServer, errorSettingCallback, {
-        context,
-        read,
-        modify,
-        message: {text: GeneralSettings.bbbServer.errorMessage}
-    })
+    const server: string = await getSettingValue(
+        accessors,
+        GeneralSettings.bbbServer,
+        errorSettingCallback,
+        {
+            context,
+            read,
+            modify,
+            message: {text: GeneralSettings.bbbServer.errorMessage}
+        }
+    )
     // RecurringMeetings.weeklyRoomId
-    const weeklyRoomId: string = await getSettingValue(accessors, RecurringMeetings.weeklyRoomId, errorSettingCallback, {
-        context,
-        read,
-        modify,
-        message: {text: RecurringMeetings.weeklyRoomId.errorMessage}
-    })
+    const weeklyRoomId: string = await getSettingValue(
+        accessors,
+        RecurringMeetings.weeklyRoomId,
+        errorSettingCallback,
+        {
+            context,
+            read,
+            modify,
+            message: {text: RecurringMeetings.weeklyRoomId.errorMessage}
+        }
+    )
     return [server, weeklyRoomId]
 }

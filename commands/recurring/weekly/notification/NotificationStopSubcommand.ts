@@ -15,7 +15,14 @@ export class WeeklyNotificationStopSubcommand extends AppCommand {
         this.registerCommand(new HelpCommand(this))
     }
 
-    public async executor(context: SlashCommandContext, read: IRead, modify: IModify, http: IHttp, persis: IPersistence, args?: Array<string>): Promise<void> {
+    public async executor(
+        context: SlashCommandContext,
+        read: IRead,
+        modify: IModify,
+        http: IHttp,
+        persis: IPersistence,
+        args?: Array<string>
+    ): Promise<void> {
         await modify.getScheduler().cancelJob(RecurringNotificationJobs.WEEKLY)
         await notifySender({
             context,

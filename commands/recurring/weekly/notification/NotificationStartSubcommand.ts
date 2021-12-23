@@ -1,4 +1,10 @@
-import {IAppAccessors, IHttp, IModify, IPersistence, IRead} from '@rocket.chat/apps-engine/definition/accessors'
+import {
+    IAppAccessors,
+    IHttp,
+    IModify,
+    IPersistence,
+    IRead
+} from '@rocket.chat/apps-engine/definition/accessors'
 import {App} from '@rocket.chat/apps-engine/definition/App'
 import {SlashCommandContext} from '@rocket.chat/apps-engine/definition/slashcommands'
 import {RecurringNotificationJobs} from '../../../../enums/RecurringNotificationJobs'
@@ -20,20 +26,37 @@ export class WeeklyNotificationStartSubcommand extends AppCommand {
         this.registerCommand(new HelpCommand(this))
     }
 
-    public async executor(context: SlashCommandContext, read: IRead, modify: IModify, http: IHttp, persis: IPersistence, args?: Array<string>): Promise<void> {
+    public async executor(
+        context: SlashCommandContext,
+        read: IRead,
+        modify: IModify,
+        http: IHttp,
+        persis: IPersistence,
+        args?: Array<string>
+    ): Promise<void> {
         const accessors: IAppAccessors = this.getApp().getAccessors()
-        const dayOfWeek: string = await getSettingValue(accessors, RecurringMeetings.weeklyDay, errorSettingCallback, {
-            context,
-            read,
-            modify,
-            setting: RecurringMeetings.weeklyDay
-        })
-        const timeString: string = await getSettingValue(accessors, RecurringMeetings.weeklyMeetingTime, errorSettingCallback, {
-            context,
-            read,
-            modify,
-            setting: RecurringMeetings.weeklyMeetingTime
-        })
+        const dayOfWeek: string = await getSettingValue(
+            accessors,
+            RecurringMeetings.weeklyDay,
+            errorSettingCallback,
+            {
+                context,
+                read,
+                modify,
+                setting: RecurringMeetings.weeklyDay
+            }
+        )
+        const timeString: string = await getSettingValue(
+            accessors,
+            RecurringMeetings.weeklyMeetingTime,
+            errorSettingCallback,
+            {
+                context,
+                read,
+                modify,
+                setting: RecurringMeetings.weeklyMeetingTime
+            }
+        )
         const cronExpr: string | undefined = getCronExpression(dayOfWeek, timeString)
         if (cronExpr === undefined) {
             await notifySender({
@@ -46,7 +69,12 @@ export class WeeklyNotificationStartSubcommand extends AppCommand {
         }
         // before starting the job
         // we need to make sure of a couple more things
-        await getSettingValue(accessors, RecurringMeetings.weeklyRoomId, errorSettingCallback, {context, read, modify, setting: RecurringMeetings.weeklyRoomId})
+        await getSettingValue(accessors, RecurringMeetings.weeklyRoomId, errorSettingCallback, {
+            context,
+            read,
+            modify,
+            setting: RecurringMeetings.weeklyRoomId
+        })
 
         await getSettingValue(accessors, GeneralSettings.notificationRooms, errorSettingCallback, {
             context,

@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@types/node": "^17.0.8",
+    "fastify": "^3.25.3",
+    "fluent-json-schema": "^3.0.1",
+    "nodejs-file-downloader": "^4.9.2"
+  }
+}

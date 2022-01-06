@@ -19,7 +19,7 @@ Upon completion of processing of an MP4 recording, the following workflow starts
 ```
 npm i
 node server
-curl http://localhost:3000/downloadmp4?url=https%3A%2F%2Frec.elos.vc%2Fpresentation_video%2F9caad0e0882de12e2a6f9f6a901f6aea4f295552-1641390694002%2Fvideo.mp4&meetingMonth=1&meetingDay=1&meetingYear=2021
+curl http://localhost:3000/downloadmp4?url=https%3A%2F%2F-URL-TO-SOME-LARGE-MP4-File.mp4&meetingMonth=1&meetingDay=1&meetingYear=2021
 ```
 
 More details to come

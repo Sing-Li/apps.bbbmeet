@@ -26,8 +26,7 @@ export class RecordingExportInfo extends ApiEndpoint {
         http: IHttp,
         persis: IPersistence
     ): Promise<IApiResponse> {
-        const event = JSON.parse(request.content.event)
-        const {data} = Array.isArray(event) ? [event] : event
+        const [{data}] = JSON.parse(request.content.event)
         if (data.id !== 'rap-publish-ended' || data.attributes.workflow !== 'presentation_video') {
             // we don't care about these events at the moment
             return {

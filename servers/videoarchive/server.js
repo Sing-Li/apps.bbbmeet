@@ -2,12 +2,14 @@
 
 //  it takes an MP4 URL as input and downloads the file
 //  into the destination directory
-//  it should also synthesize the required metadata 
+//  it should also synthesize the required metadata
 
 
 const fast = require('fastify')({ logger: {level: 'debug'} })
 const downloader = require('nodejs-file-downloader')
 const S = require('fluent-json-schema')
+
+
 
 // sync time waster function to similate download
 const sleep = async (ms) => {
@@ -43,12 +45,19 @@ fast.get('/waste', async (request, reply) => {
   return { result: 'wasted 20 seconds' }
 })
 
+const bodySchema =  S.object()
+      .prop('url', S.string().format(S.FORMATS.URL).minLength(10).required())
+      .prop('meetingMonth', S.integer().minimum(1).maximum(12).required())
+      .prop('meetingDay', S.integer().minimum(1).maximum(31).required())
+      .prop('meetingYear', S.integer().minimum(2021).required())
+      ;
+
 // handle the downloading of the MP4
 fast.route({
   method: 'GET',
-  path:  '/downloadmp4', 
+  path:  '/downloadmp4',
   handler: async (request, reply) => {
-    // tested to be fully functional 
+    // tested to be fully functional
     const destinationDirectoy = getDestinationDirectory();
     const { url } = request.query
     const downloadReq = new downloader({
@@ -63,22 +72,67 @@ fast.route({
       fast.log.error(error);
       return { result: 'Error in filed downaload'}
     }
-  
+
 },
 // simple schema with primitive metadata, should be expanded
 schema: {
   description: 'Get URL to mp4 and meeting metadata.',
-  query: S.object()
-    .prop('url', S.string().format(S.FORMATS.URL).minLength(10).required())
-    .prop('meetingMonth', S.integer().minimum(1).maximum(12).required())
-    .prop('meetingDay', S.integer().minimum(1).maximum(31).required())
-    .prop('meetingYear', S.integer().minimum(2021).required()),
+  query: bodySchema,
   response: {
     200: S.object()
       .prop('result', S.string())
   }
 }
 })
+
+
+// curl -X POST -d '{"hello":"world"}' -H'Content-type: application/jsoff' http://localhost:3000/
+fast.addContentTypeParser('application/json', { parseAs: 'string' },
+    function (req, body, done) {
+    try {
+      const json = JSON.parse(body)
+      done(null, json)
+    } catch (err) {
+      err.statusCode = 400
+      done(err, undefined)
+    }
+  })
+
+// handle same request via post
+
+fast.route({
+    method: 'POST',
+    path:  '/downloadmp4',
+    handler: async (request, reply) => {
+
+console.log(JSON.stringify( request.body));
+      // tested to be fully functional
+      const destinationDirectoy = getDestinationDirectory();
+      const { url } = request.body
+      const downloadReq = new downloader({
+      url: url,
+      directory: destinationDirectoy
+      })
+      try {
+        await downloadReq.download(); //Downloader.download() returns a promise.
+        await synthesizeMetadata(request, destinationDirectoy);
+        return { result: 'file downloaded at xxx' }
+      } catch (error) {
+        fast.log.error(error);
+        return { result: 'Error in filed downaload'}
+      }
+
+  },
+  // simple schema with primitive metadata, should be expanded
+  schema: {
+    description: 'Get URL to mp4 and meeting metadata.',
+    body: bodySchema,
+    response: {
+      200: S.object()
+        .prop('result', S.string())
+    }
+  }
+  })
 
 // Run the server!
 const start = async () => {

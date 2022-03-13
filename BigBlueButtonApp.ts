@@ -3,11 +3,13 @@ import {
     IConfigurationExtend,
     ILogger
 } from '@rocket.chat/apps-engine/definition/accessors'
+import { ApiSecurity, ApiVisibility } from '@rocket.chat/apps-engine/definition/api'
 import {App} from '@rocket.chat/apps-engine/definition/App'
 import {IAppInfo} from '@rocket.chat/apps-engine/definition/metadata'
 import {ISetting} from '@rocket.chat/apps-engine/definition/settings'
 import {BBBSlashCommand} from './commands/BBBCommand'
 import {WeeklyJoinSubcommand} from './commands/weekly/WeeklyJoinSubcommand'
+import {WebhookEndpoint} from './endpoints/webhook'
 import {RecurringMeetings} from './settings/RecurringMeetings'
 
 export default class BigBlueButton extends App {
@@ -29,6 +31,11 @@ export default class BigBlueButton extends App {
                 alias: 'weekly'
             })
         )
+        configuration.api.provideApi({
+            visibility: ApiVisibility.PUBLIC,
+            security: ApiSecurity.UNSECURE,
+            endpoints: [new WebhookEndpoint(this)],
+        });
 
         await Promise.all(
             Object.values(RecurringMeetings).map((setting: ISetting) =>
